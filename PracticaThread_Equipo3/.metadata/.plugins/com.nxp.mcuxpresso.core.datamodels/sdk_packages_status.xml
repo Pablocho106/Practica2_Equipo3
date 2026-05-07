@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdk-packages>
+<package hash="1770336208174" path="C:\Users\nahum\mcuxpresso\02\SDKPackages\com.nxp.mcuxpresso.sdk.sdk_2.x_frdm-k64f_p2site_2.11.0.2019112514465426554656343506503.zip" schema="manifest-schema/sdk_manifest_v3.15.xsd"/>
+<package hash="1764338146377" path="C:\Users\nahum\mcuxpresso\02\SDKPackages\SDK_25_09_00_FRDM-MCXN947" schema="manifest-schema/sdk_manifest_v3.15.xsd"/>
+<package hash="1775608347460" path="C:\Users\nahum\mcuxpresso\02\SDKPackages\SDK_2_2_3_FRDM-KW41Z.zip" schema="manifest-schema/sdk_manifest_v3.3.xsd"/>
+</sdk-packages>

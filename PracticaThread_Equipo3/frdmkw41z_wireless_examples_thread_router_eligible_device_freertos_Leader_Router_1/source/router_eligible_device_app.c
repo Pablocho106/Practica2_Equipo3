@@ -53,7 +53,8 @@ Include Files
 #if UDP_ECHO_PROTOCOL
 #include "app_echo_udp.h"
 #endif
-
+#include "fsl_fxos.h"
+#include "fsl_i2c.h"
 /*==================================================================================================
 Private macros
 ==================================================================================================*/
@@ -83,7 +84,8 @@ Private macros
 #define APP_RESET_TO_FACTORY_URI_PATH           "/reset"
 #endif
 
-#define APP_EQUIPO3_URI_PATH                    "/Equipo3" /**/
+#define APP_EQUIPO3_URI_PATH                    "/Equipo3" /*URI*/
+#define APP_ACCEL_URI_PATH                      "/accel"
 
 /* Counter limits */
 #define APP_EQUIPO3_COUNTER_MIN_c               1
@@ -144,6 +146,8 @@ static void APP_CoapEquipo3Cb(coapSessionStatus_t sessionStatus, uint8_t *pData,
 static void APP_Equipo3TimerCallback(void *param);
 static void APP_Equipo3CounterTick(uint8_t *pParam);
 
+static void APP_CoapAccelCb(coapSessionStatus_t sessionStatus, uint8_t *pData, coapSession_t *pSession, uint32_t dataLen);
+
 
 /*==================================================================================================
 Public global variables declarations
@@ -182,6 +186,8 @@ tmrTimerID_t tmrStartApp = gTmrInvalidTimerID_c;
 /* Counter and Timer*/
 uint16_t gEquipo3Counter = APP_EQUIPO3_COUNTER_MIN_c;
 tmrTimerID_t mEquipo3TimerId = gTmrInvalidTimerID_c;
+
+const coapUriPath_t gAPP_ACCEL_URI_PATH   = {SizeOfString(APP_ACCEL_URI_PATH),   (uint8_t *)APP_ACCEL_URI_PATH};
 
 
 uint32_t leaderLedTimestamp = 0;
@@ -528,7 +534,8 @@ static void APP_InitCoapDemo
                                      {APP_CoapResetToFactoryDefaultsCb, (coapUriPath_t *)&gAPP_RESET_URI_PATH},
 #endif
                                      {APP_CoapSinkCb, (coapUriPath_t *)&gAPP_SINK_URI_PATH},
-    								 {APP_CoapEquipo3Cb, (coapUriPath_t *)&gAPP_EQUIPO3_URI_PATH}};
+    								 {APP_CoapEquipo3Cb, (coapUriPath_t *)&gAPP_EQUIPO3_URI_PATH},
+									 {APP_CoapAccelCb,   (coapUriPath_t *)&gAPP_ACCEL_URI_PATH}};
     /* Register Services in COAP */
     sockaddrStorage_t coapParams = {0};
 
@@ -1640,3 +1647,19 @@ static void APP_Equipo3TimerCallback
 {
     (void)NWKU_SendMsg(APP_Equipo3CounterTick, NULL, mpAppThreadMsgQueue);
 }
+
+/*!*************************************************************************************************
+\brief  To be implemented.
+***************************************************************************************************/
+static void APP_CoapAccelCb
+(
+    coapSessionStatus_t sessionStatus,
+    uint8_t *pData,
+    coapSession_t *pSession,
+    uint32_t dataLen
+)
+{
+
+    return;
+}
+
