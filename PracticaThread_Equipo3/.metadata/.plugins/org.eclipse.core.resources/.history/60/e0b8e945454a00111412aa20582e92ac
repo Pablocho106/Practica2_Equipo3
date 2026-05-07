@@ -1560,7 +1560,6 @@ static void APP_CoapEquipo3Cb
     }
     shell_refresh();
 
-
     /* ---- Build counter string for GET responses ---- */
     if(pSession->code == gCoapGET_c)
     {
@@ -1602,11 +1601,12 @@ static void APP_CoapEquipo3Cb
         }
         else
         {
-
+            /* POST / other methods: acknowledge with 2.04 Changed */
             COAP_Send(pSession, gCoapMsgTypeAckSuccessChanged_c, NULL, 0);
         }
     }
 
+    return;
 }
 
 

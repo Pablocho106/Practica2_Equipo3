@@ -1560,7 +1560,6 @@ static void APP_CoapEquipo3Cb
     }
     shell_refresh();
 
-
     /* ---- Build counter string for GET responses ---- */
     if(pSession->code == gCoapGET_c)
     {
@@ -1591,22 +1590,8 @@ static void APP_CoapEquipo3Cb
 
 
 
-    /* ---- Reply, ACK for CON, silence for NON ---- */
-    if(isConfirmable)
-    {
-        if(pSession->code == gCoapGET_c)
-        {
-            /* Respond with counter value */
-            COAP_Send(pSession, gCoapMsgTypeAckSuccessContent_c,
-                      (uint8_t *)counterStr, counterStrLen);
-        }
-        else
-        {
 
-            COAP_Send(pSession, gCoapMsgTypeAckSuccessChanged_c, NULL, 0);
-        }
-    }
-
+    return;
 }
 
 
