@@ -1,0 +1,21 @@
+!SESSION 2026-05-06 19:31:09.817 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=17.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_MX
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.nxp.mcuxpresso.core.datamodels 1 0 2026-05-06 19:39:54.379
+!MESSAGE Recreating part support. No part support available.
+
+!ENTRY com.nxp.mcuxpresso.core.datamodels 1 0 2026-05-06 19:40:00.354
+!MESSAGE The device 'MK64FN1M0xxx12' (version='1.0.0') from SDK 'SDK_2.x_FRDM-K64F' (version='2.11.0', build='epluginsite519 2022-01-17') will be installed.
+
+!ENTRY com.nxp.mcuxpresso.core.datamodels 1 0 2026-05-06 19:40:01.153
+!MESSAGE The device 'MCXN947' (version='1.0.0') from SDK 'SDK_2.x_FRDM-MCXN947' (version='25.09.00', build='905 2025-09-22') will be installed.
+
+!ENTRY com.nxp.mcuxpresso.core.datamodels 1 0 2026-05-06 19:40:01.303
+!MESSAGE The device 'MKW41Z512xxx4' (version='1.0.0') from SDK 'SDK_2.x_FRDM-KW41Z' (version='2.2.3', build='') will be installed.
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-05-06 19:41:28.137
+!MESSAGE Indexed 'frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1' (142 sources, 248 headers) in 4.98 sec: 28,695 declarations; 76,147 references; 0 unresolved inclusions; 80 syntax errors; 116 unresolved names (0.11 %)
