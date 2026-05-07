@@ -209,3 +209,12 @@ org.eclipse.swt.SWTException: Device is disposed
 	at org.eclipse.equinox.internal.event.EventHandlerTracker.dispatchEvent(EventHandlerTracker.java:1)
 	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
 	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+!SESSION 2026-05-07 14:15:21.128 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=17.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_MX
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-05-07 14:22:13.241
+!MESSAGE Indexed 'Practica2_Equipo3_wireless_examples_thread_router_eligible_device_freertos' (142 sources, 248 headers) in 11 sec: 28,633 declarations; 75,118 references; 3 unresolved inclusions; 117 syntax errors; 1,041 unresolved names (0.99 %)
