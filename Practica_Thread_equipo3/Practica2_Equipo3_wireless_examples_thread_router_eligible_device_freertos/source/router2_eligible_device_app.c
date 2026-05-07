@@ -17,7 +17,7 @@ Include Files
 /* General Includes */
 #include "EmbeddedTypes.h"
 #include <string.h>
-
+#include <stdio.h>
 /* FSL Framework */
 #include "shell.h"
 #include "Keyboard.h"
@@ -82,6 +82,7 @@ Private macros
 
 #define APP_RESOURCE1_URI_PATH				"/resource1"
 #define APP_RESOURCE2_URI_PATH				"/resource2"
+#define APP_TEAM_URI_PATH    				"/Equipo3"
 
 #if LARGE_NETWORK
 #define APP_RESET_TO_FACTORY_URI_PATH           "/reset"
@@ -102,9 +103,13 @@ static bool_t mFirstPushButtonPressed = FALSE;
 
 static bool_t mJoiningIsAppInitiated = FALSE;
 
+tmrTimerID_t mRouter2TimerId = gTmrInvalidTimerID_c;
 /*==================================================================================================
 Private prototypes
 ==================================================================================================*/
+static void APP_Router2TimerCallback(void *param);
+static void APP_Router2CoapResponseCb(coapSessionStatus_t sessionStatus, uint8_t *pData, coapSession_t *pSession, uint32_t dataLen);
+
 static void App_HandleKeyboard(uint8_t *param);
 static void App_UpdateStateLeds(appDeviceState_t deviceState);
 static void APP_JoinEventsHandler(thrEvCode_t evCode);
@@ -221,7 +226,7 @@ static void APP_CoapResource1Cb
         if (gCoapPUT_c == pSession->code)
             shell_write("'NON' packet received 'PUT' with payload: ");
     }
-    shell_writeN(pData, dataLen);
+    shell_writeN((char*)pData, dataLen);
     shell_write("\r\n");
     pMySession->msgType = gCoapNonConfirmable_c;
     pMySession->code = gCoapPOST_c;
@@ -244,12 +249,62 @@ static void APP_CoapResource2Cb
     if (gCoapNonConfirmable_c == pSession->msgType)
     {
         shell_write("'NON' packet received 'POST' with payload: ");
-        shell_writeN(pData, dataLen);
+        shell_writeN((char*)pData, dataLen);
         shell_write("\r\n");
     }
 }
 
+static void APP_Router2TimerCallback(void *param)
+{
+    coapSession_t *pSession = COAP_OpenSession(mAppCoapInstId);
 
+    if (pSession)
+    {
+        pSession->code     = gCoapGET_c;
+        pSession->msgType  = gCoapConfirmable_c;   // CON request
+        pSession->pCallback = APP_Router2CoapResponseCb;
+
+        /* Dirección destino del Leader o el Router1 */
+        FLib_MemCpy(&pSession->remoteAddrStorage.ss_addr, &gCoapDestAddress, sizeof(ipAddr_t));
+
+        COAP_AddOptionToList(pSession, COAP_URI_PATH_OPTION,
+                             (uint8_t *)APP_TEAM_URI_PATH,
+                             SizeOfString(APP_TEAM_URI_PATH));
+
+        COAP_Send(pSession, gCoapMsgTypeConGet_c, NULL, 0);
+    }
+}
+
+
+static void APP_Router2CoapResponseCb
+(
+    coapSessionStatus_t sessionStatus,
+    uint8_t *pData,
+    coapSession_t *pSession,
+    uint32_t dataLen
+)
+{
+    char addrStr[INET6_ADDRSTRLEN];
+    char valueStr[12];
+
+    if (sessionStatus == gCoapSuccess_c && pData != NULL && dataLen > 0)
+    {
+        /* Obtener la IP */
+        ntop(AF_INET6, (ipAddr_t *)&pSession->remoteAddrStorage.ss_addr,
+             addrStr, INET6_ADDRSTRLEN);
+
+        /* Copiar valor recibido a string */
+        uint32_t len = (dataLen < sizeof(valueStr) - 1) ? dataLen : (sizeof(valueStr) - 1);
+        FLib_MemCpy(valueStr, pData, len);
+        valueStr[len] = '\0';
+
+        /* Tipo de mensaje */
+        const char *msgType = (gCoapConfirmable_c == pSession->msgType) ? "CON" : "NON";
+
+        shell_printf("Counter = %s from %s type %s\r\n", valueStr, addrStr, msgType);
+        shell_refresh();
+    }
+}
 
 void APP_Init
 (
@@ -404,7 +459,13 @@ void Stack_to_APP_Handler
             gEnable802154TxLed = TRUE;
             /* Uncomment to register multicast address */
             //IP_IF_AddMulticastGroup6(gIpIfSlp0_c, &mCastGroup);
+            mRouter2TimerId = TMR_AllocateTimer();
+            if (mRouter2TimerId != gTmrInvalidTimerID_c)
+            {
+                TMR_StartIntervalTimer(mRouter2TimerId, 2000, APP_Router2TimerCallback, NULL);
+            }
             break;
+
 
         case gThrEv_GeneralInd_RequestRouterId_c:
             gEnable802154TxLed = FALSE;
