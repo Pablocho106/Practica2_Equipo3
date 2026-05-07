@@ -1723,31 +1723,7 @@ static void APP_CoapAccelCb
     uint32_t dataLen
 )
 {
-	char addrStr[INET6_ADDRSTRLEN];
-	bool_t isConfirmable;
 
-	/* Solo se procesan mensajes correctamente recibidos */
-	    if(sessionStatus != gCoapSuccess_c)
-	    {
-	        return;
-	    }
-
-	    /* CON vs NON and print requester info */
-	    isConfirmable = (pSession->msgType == gCoapConfirmable_c);
-
-	    ntop(AF_INET6, (ipAddr_t*)&pSession->remoteAddrStorage.ss_addr,
-	         addrStr, INET6_ADDRSTRLEN);
-
-	    shell_write("\r");
-	    if(isConfirmable)
-	    {
-	        shell_printf("CON instruction received from %s\n\r", addrStr);
-	    }
-	    else
-	    {
-	        shell_printf("NON instruction received from %s\n\r", addrStr);
-	    }
-	    shell_refresh();
-
+    return;
 }
 

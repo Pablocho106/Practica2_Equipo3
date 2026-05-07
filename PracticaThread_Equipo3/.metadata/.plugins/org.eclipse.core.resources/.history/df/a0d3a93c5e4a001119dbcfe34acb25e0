@@ -1726,13 +1726,13 @@ static void APP_CoapAccelCb
 	char addrStr[INET6_ADDRSTRLEN];
 	bool_t isConfirmable;
 
-	/* Solo se procesan mensajes correctamente recibidos */
+	/* Only process successfully received messages */
 	    if(sessionStatus != gCoapSuccess_c)
 	    {
 	        return;
 	    }
 
-	    /* CON vs NON and print requester info */
+	    /* Determine CON vs NON and print requester info */
 	    isConfirmable = (pSession->msgType == gCoapConfirmable_c);
 
 	    ntop(AF_INET6, (ipAddr_t*)&pSession->remoteAddrStorage.ss_addr,
