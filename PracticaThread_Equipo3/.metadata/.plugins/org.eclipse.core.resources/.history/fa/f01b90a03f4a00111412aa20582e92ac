@@ -349,20 +349,6 @@ void Stack_to_APP_Handler
             THR_BrPrefixAttrSync(mThrInstanceId);
             /* Enable LED for 80215.4 tx activity */
             gEnable802154TxLed = TRUE;
-
-
-            /* Start counter timer (1 second) } */
-            if(mEquipo3TimerId == gTmrInvalidTimerID_c)
-            {
-            	mEquipo3TimerId = TMR_AllocateTimer();
-            }
-            if(mEquipo3TimerId != gTmrInvalidTimerID_c)
-            {
-            	gEquipo3Counter = APP_EQUIPO3_COUNTER_MIN_c;
-            	TMR_StartIntervalTimer(mEquipo3TimerId, APP_EQUIPO3_TIMER_PERIOD_c,
-            			APP_Equipo3TimerCallback, NULL);
-            }
-
             /* Uncomment to register multicast address */
             //IP_IF_AddMulticastGroup6(gIpIfSlp0_c, &mCastGroup);
             break;
@@ -1519,11 +1505,6 @@ static void APP_AutoStartCb
 /*==================================================================================================
 Private debug functions
 ==================================================================================================*/
-
-/*!************************************************************************************************
-\brief  Application.
-
-***************************************************************************************************/
 static void APP_CoapEquipo3Cb
 (
     coapSessionStatus_t sessionStatus,
@@ -1537,36 +1518,4 @@ static void APP_CoapEquipo3Cb
     (void)pSession;
     (void)dataLen;
     return;
-}
-
-
-/*!************************************************************************************************
-\brief  Increments the counter from 1 to 200.
-        Called from the task context via message queue.
-***************************************************************************************************/
-static void APP_Equipo3CounterTick
-(
-    uint8_t *pParam
-)
-{
-    gEquipo3Counter++;
-
-    if(gEquipo3Counter > APP_EQUIPO3_COUNTER_MAX_c)
-    {
-        gEquipo3Counter = APP_EQUIPO3_COUNTER_MIN_c;
-    }
-}
-
-
-
-/*!*************************************************************************************************
-\brief  Timer ISR-context callback that posts a counter-tick message to the application queue.
-        Fires every APP_EQUIPO3_TIMER_PERIOD_c milliseconds (1 second).
-***************************************************************************************************/
-static void APP_Equipo3TimerCallback
-(
-    void *param
-)
-{
-    (void)NWKU_SendMsg(APP_Equipo3CounterTick, NULL, mpAppThreadMsgQueue);
 }

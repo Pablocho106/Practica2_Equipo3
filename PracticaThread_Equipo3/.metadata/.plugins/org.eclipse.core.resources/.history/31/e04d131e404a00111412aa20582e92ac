@@ -1520,27 +1520,7 @@ static void APP_AutoStartCb
 Private debug functions
 ==================================================================================================*/
 
-/*!************************************************************************************************
-\brief  Application.
-
-***************************************************************************************************/
-static void APP_CoapEquipo3Cb
-(
-    coapSessionStatus_t sessionStatus,
-    uint8_t *pData,
-    coapSession_t *pSession,
-    uint32_t dataLen
-)
-{
-    (void)sessionStatus;
-    (void)pData;
-    (void)pSession;
-    (void)dataLen;
-    return;
-}
-
-
-/*!************************************************************************************************
+/**************************************************************************************************
 \brief  Increments the counter from 1 to 200.
         Called from the task context via message queue.
 ***************************************************************************************************/
@@ -1558,15 +1538,17 @@ static void APP_Equipo3CounterTick
 }
 
 
-
-/*!*************************************************************************************************
-\brief  Timer ISR-context callback that posts a counter-tick message to the application queue.
-        Fires every APP_EQUIPO3_TIMER_PERIOD_c milliseconds (1 second).
-***************************************************************************************************/
-static void APP_Equipo3TimerCallback
+static void APP_CoapEquipo3Cb
 (
-    void *param
+    coapSessionStatus_t sessionStatus,
+    uint8_t *pData,
+    coapSession_t *pSession,
+    uint32_t dataLen
 )
 {
-    (void)NWKU_SendMsg(APP_Equipo3CounterTick, NULL, mpAppThreadMsgQueue);
+    (void)sessionStatus;
+    (void)pData;
+    (void)pSession;
+    (void)dataLen;
+    return;
 }
