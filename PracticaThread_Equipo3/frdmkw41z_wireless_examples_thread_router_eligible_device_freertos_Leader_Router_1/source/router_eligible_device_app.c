@@ -148,7 +148,7 @@ static void APP_Equipo3TimerCallback(void *param);
 static void APP_Equipo3CounterTick(uint8_t *pParam);
 
 static void APP_CoapAccelCb(coapSessionStatus_t sessionStatus, uint8_t *pData, coapSession_t *pSession, uint32_t dataLen);
-static void APP_InitAccel(void);
+static void APP_InitAccel(uint8_t *param);
 
 /*==================================================================================================
 Public global variables declarations
@@ -246,8 +246,7 @@ void APP_Init
         APP_InitADC(ADC_0);
 #endif
 
-        /*Initialize Accelerometer*/
-        APP_InitAccel();
+
 
 
 #if THREAD_USE_THCI && THR_ENABLE_MGMT_DIAGNOSTICS
@@ -379,6 +378,8 @@ void Stack_to_APP_Handler
             			APP_Equipo3TimerCallback, NULL);
             }
 
+            /* Initialize accelerometer once network is up */
+            (void)NWKU_SendMsg((void*)APP_InitAccel, NULL, mpAppThreadMsgQueue);
             /* Uncomment to register multicast address */
             //IP_IF_AddMulticastGroup6(gIpIfSlp0_c, &mCastGroup);
             break;
@@ -1665,7 +1666,7 @@ static void APP_Equipo3TimerCallback
 ***************************************************************************************************/
 static void APP_InitAccel
 (
-    void
+    uint8_t *param
 )
 {
     i2c_master_config_t i2cConfig;
@@ -1713,7 +1714,7 @@ static void APP_InitAccel
 
 
 /*!*************************************************************************************************
-\brief  To be implemented.
+\brief  Accelerometer Applicaation.
 ***************************************************************************************************/
 
 static void APP_CoapAccelCb
