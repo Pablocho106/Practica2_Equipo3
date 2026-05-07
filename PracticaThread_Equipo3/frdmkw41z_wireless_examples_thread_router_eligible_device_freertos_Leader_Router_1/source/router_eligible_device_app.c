@@ -83,6 +83,8 @@ Private macros
 #define APP_RESET_TO_FACTORY_URI_PATH           "/reset"
 #endif
 
+#define APP_EQUIPO3_URI_PATH                    "/Equipo3" /**/
+
 #define APP_DEFAULT_DEST_ADDR                   in6addr_realmlocal_allthreadnodes
 
 /*==================================================================================================
@@ -130,6 +132,12 @@ static void APP_AutoStart(void *param);
 static void APP_AutoStartCb(void *param);
 #endif
 
+
+/* Equipo3 prototypes */
+static void APP_CoapEquipo3Cb(coapSessionStatus_t sessionStatus, uint8_t *pData, coapSession_t *pSession, uint32_t dataLen);
+static void APP_Equipo3TimerCallback(void *param);
+static void APP_Equipo3CounterTick(uint8_t *pParam);
+
 /*==================================================================================================
 Public global variables declarations
 ==================================================================================================*/
@@ -139,6 +147,8 @@ const coapUriPath_t gAPP_SINK_URI_PATH = {SizeOfString(APP_SINK_URI_PATH), (uint
 #if LARGE_NETWORK
 const coapUriPath_t gAPP_RESET_URI_PATH = {SizeOfString(APP_RESET_TO_FACTORY_URI_PATH), (uint8_t *)APP_RESET_TO_FACTORY_URI_PATH};
 #endif
+
+const coapUriPath_t gAPP_EQUIPO3_URI_PATH = {SizeOfString(APP_EQUIPO3_URI_PATH), (uint8_t *)APP_EQUIPO3_URI_PATH};
 
 /* Application state/mode */
 appDeviceState_t gAppDeviceState[THR_MAX_INSTANCES];
@@ -490,7 +500,8 @@ static void APP_InitCoapDemo
 #if LARGE_NETWORK
                                      {APP_CoapResetToFactoryDefaultsCb, (coapUriPath_t *)&gAPP_RESET_URI_PATH},
 #endif
-                                     {APP_CoapSinkCb, (coapUriPath_t *)&gAPP_SINK_URI_PATH}};
+                                     {APP_CoapSinkCb, (coapUriPath_t *)&gAPP_SINK_URI_PATH},
+    								 {APP_CoapEquipo3Cb, (coapUriPath_t *)&gAPP_EQUIPO3_URI_PATH}};
     /* Register Services in COAP */
     sockaddrStorage_t coapParams = {0};
 
@@ -1481,3 +1492,17 @@ static void APP_AutoStartCb
 /*==================================================================================================
 Private debug functions
 ==================================================================================================*/
+static void APP_CoapEquipo3Cb
+(
+    coapSessionStatus_t sessionStatus,
+    uint8_t *pData,
+    coapSession_t *pSession,
+    uint32_t dataLen
+)
+{
+    (void)sessionStatus;
+    (void)pData;
+    (void)pSession;
+    (void)dataLen;
+    return;
+}
