@@ -83,6 +83,8 @@ Private macros
 #define APP_RESOURCE1_URI_PATH				"/resource1"
 #define APP_RESOURCE2_URI_PATH				"/resource2"
 #define APP_TEAM_URI_PATH    				"/Equipo3"
+#define APP_STOPTIMER_URI_PATH     			"/stopTmr"
+#define APP_RESTARTTIMER_URI_PATH  			"/restartTmr"
 
 #if LARGE_NETWORK
 #define APP_RESET_TO_FACTORY_URI_PATH           "/reset"
@@ -102,13 +104,19 @@ static instanceId_t mThrInstanceId = gInvalidInstanceId_c;    /*!< Thread Instan
 static bool_t mFirstPushButtonPressed = FALSE;
 
 static bool_t mJoiningIsAppInitiated = FALSE;
-
+//Parte 1
 tmrTimerID_t mRouter2TimerId = gTmrInvalidTimerID_c;
+//Parte 2
+static uint32_t mLastReceivedCount = 0;
 /*==================================================================================================
 Private prototypes
 ==================================================================================================*/
 static void APP_Router2TimerCallback(void *param);
 static void APP_Router2CoapResponseCb(coapSessionStatus_t sessionStatus, uint8_t *pData, coapSession_t *pSession, uint32_t dataLen);
+//Parte 2
+static void APP_CoapStopTmrCb(coapSessionStatus_t sessionStatus, uint8_t *pData, coapSession_t *pSession, uint32_t dataLen);
+static void APP_CoapRestartTmrCb(coapSessionStatus_t sessionStatus, uint8_t *pData, coapSession_t *pSession, uint32_t dataLen);
+
 
 static void App_HandleKeyboard(uint8_t *param);
 static void App_UpdateStateLeds(appDeviceState_t deviceState);
@@ -148,6 +156,9 @@ Public global variables declarations
 const coapUriPath_t gAPP_LED_URI_PATH  = {SizeOfString(APP_LED_URI_PATH), (uint8_t *)APP_LED_URI_PATH};
 const coapUriPath_t gAPP_TEMP_URI_PATH = {SizeOfString(APP_TEMP_URI_PATH), (uint8_t *)APP_TEMP_URI_PATH};
 const coapUriPath_t gAPP_SINK_URI_PATH = {SizeOfString(APP_SINK_URI_PATH), (uint8_t *)APP_SINK_URI_PATH};
+
+const coapUriPath_t gAPP_STOPTIMER_URI_PATH    = {SizeOfString(APP_STOPTIMER_URI_PATH),    (uint8_t *)APP_STOPTIMER_URI_PATH};
+const coapUriPath_t gAPP_RESTARTTIMER_URI_PATH = {SizeOfString(APP_RESTARTTIMER_URI_PATH), (uint8_t *)APP_RESTARTTIMER_URI_PATH};
 
 const coapUriPath_t gAPP_RESOURCE1_URI_PATH = {SizeOfString(APP_RESOURCE1_URI_PATH), (uint8_t *)APP_RESOURCE1_URI_PATH};
 const coapUriPath_t gAPP_RESOURCE2_URI_PATH = {SizeOfString(APP_RESOURCE2_URI_PATH), (uint8_t *)APP_RESOURCE2_URI_PATH};
@@ -305,6 +316,59 @@ static void APP_Router2CoapResponseCb
         shell_refresh();
     }
 }
+
+//Parte 2
+static void APP_CoapStopTmrCb
+(
+    coapSessionStatus_t sessionStatus,
+    uint8_t *pData,
+    coapSession_t *pSession,
+    uint32_t dataLen
+)
+{
+    char addrStr[INET6_ADDRSTRLEN];
+
+    ntop(AF_INET6, (ipAddr_t *)&pSession->remoteAddrStorage.ss_addr, addrStr, INET6_ADDRSTRLEN);
+
+    const char *msgType = (gCoapConfirmable_c == pSession->msgType) ? "CON" : "NON";
+    TMR_StopTimer(mRouter2TimerId);
+    shell_printf("El tiempo se detuvo en %s tipo %s Contador= %lu\r\n",
+                 addrStr,
+                 msgType,
+                 (unsigned long)mLastReceivedCount);
+    shell_refresh();
+    if (gCoapConfirmable_c == pSession->msgType)
+    {
+        COAP_Send(pSession, gCoapMsgTypeAckSuccessChanged_c, NULL, 0);
+    }
+}
+
+static void APP_CoapRestartTmrCb
+(
+    coapSessionStatus_t sessionStatus,
+    uint8_t *pData,
+    coapSession_t *pSession,
+    uint32_t dataLen
+)
+{
+    char addrStr[INET6_ADDRSTRLEN];
+    ntop(AF_INET6, (ipAddr_t *)&pSession->remoteAddrStorage.ss_addr, addrStr, INET6_ADDRSTRLEN);
+    const char *msgType = (gCoapConfirmable_c == pSession->msgType) ? "CON" : "NON";
+
+    TMR_StartIntervalTimer(mRouter2TimerId, 2000, APP_Router2TimerCallback, NULL);
+
+    shell_printf("El timer inicio en %s tipo %s Contador= %lu\r\n",
+                 addrStr,
+                 msgType,
+                 (unsigned long)mLastReceivedCount);
+    shell_refresh();
+
+    if (gCoapConfirmable_c == pSession->msgType)
+    {
+        COAP_Send(pSession, gCoapMsgTypeAckSuccessChanged_c, NULL, 0);
+    }
+}
+
 
 void APP_Init
 (
