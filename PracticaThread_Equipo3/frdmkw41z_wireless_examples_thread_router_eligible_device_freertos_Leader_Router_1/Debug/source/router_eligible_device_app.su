@@ -1,10 +1,9 @@
-../source/router_eligible_device_app.c:1527:13:APP_CoapEquipo3Cb	0	static
-../source/router_eligible_device_app.c:1547:13:APP_Equipo3CounterTick	0	static
+../source/router_eligible_device_app.c:1574:13:APP_Equipo3CounterTick	0	static
 ../source/router_eligible_device_app.c:547:13:APP_ThrNwkJoin	8	static
 ../source/router_eligible_device_app.c:819:13:APP_JoinEventsHandler	8	static
 ../source/router_eligible_device_app.c:565:13:App_JoinTimerCallback	8	static
 ../source/router_eligible_device_app.c:700:13:APP_AppModeHandleKeyboard	8	static
-../source/router_eligible_device_app.c:1566:13:APP_Equipo3TimerCallback	8	static
+../source/router_eligible_device_app.c:1593:13:APP_Equipo3TimerCallback	8	static
 ../source/router_eligible_device_app.c:795:13:App_UpdateStateLeds	8	static
 ../source/router_eligible_device_app.c:586:13:APP_ConfigModeSwShortPressHandler	8	static
 ../source/router_eligible_device_app.c:657:13:APP_ConfigModeHandleKeyboard	8	static
@@ -25,6 +24,7 @@
 ../source/router_eligible_device_app.c:905:13:APP_ReportTemp	24	static
 ../source/router_eligible_device_app.c:983:13:APP_SendDataSinkCreate	16	static
 ../source/router_eligible_device_app.c:520:13:APP_InitCoapDemo	88	static
+../source/router_eligible_device_app.c:1527:13:APP_CoapEquipo3Cb	56	static
 ../source/router_eligible_device_app.c:1312:13:APP_CoapTempCb	88	static
 ../source/router_eligible_device_app.c:201:6:APP_Init	8	static
 ../source/router_eligible_device_app.c:263:6:APP_Handler	8	static
