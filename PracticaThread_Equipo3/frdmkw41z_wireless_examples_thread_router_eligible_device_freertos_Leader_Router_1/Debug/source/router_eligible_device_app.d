@@ -87,7 +87,10 @@ source/router_eligible_device_app.o source/router_eligible_device_app.d: \
  C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\nwk_ip\core\interface\modules/session.h \
  C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\nwk_ip\app\common/app_event_monitoring.h \
  C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\nwk_ip\core\interface\thread/thread_mgmt.h \
- C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\nwk_ip\base\interface/thci.h
+ C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\nwk_ip\base\interface/thci.h \
+ ../source/fsl_fxos.h \
+ C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\drivers/fsl_common.h \
+ C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\drivers/fsl_i2c.h
 C:/Users/nahum/OneDrive/Escritorio/Redes/PThread/PracticaThread_Equipo3/frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1/source/config.h:
 C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\nwk_ip\app\config/app_config.h:
 C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\nwk_ip\app\config/app_stack_config.h:
@@ -176,3 +179,6 @@ C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41
 C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\nwk_ip\app\common/app_event_monitoring.h:
 C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\nwk_ip\core\interface\thread/thread_mgmt.h:
 C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\nwk_ip\base\interface/thci.h:
+../source/fsl_fxos.h:
+C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\drivers/fsl_common.h:
+C:\Users\nahum\OneDrive\Escritorio\Redes\PThread\PracticaThread_Equipo3\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos_Leader_Router_1\drivers/fsl_i2c.h:

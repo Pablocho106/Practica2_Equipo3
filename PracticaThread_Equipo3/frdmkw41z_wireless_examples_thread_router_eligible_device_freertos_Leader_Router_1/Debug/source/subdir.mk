@@ -4,16 +4,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../source/fsl_fxos.c \
 ../source/mtb.c \
 ../source/router_eligible_device_app.c \
 ../source/semihost_hardfault.c 
 
 C_DEPS += \
+./source/fsl_fxos.d \
 ./source/mtb.d \
 ./source/router_eligible_device_app.d \
 ./source/semihost_hardfault.d 
 
 OBJS += \
+./source/fsl_fxos.o \
 ./source/mtb.o \
 ./source/router_eligible_device_app.o \
 ./source/semihost_hardfault.o 
@@ -31,7 +34,7 @@ source/%.o: ../source/%.c source/subdir.mk
 clean: clean-source
 
 clean-source:
-	-$(RM) ./source/mtb.d ./source/mtb.o ./source/router_eligible_device_app.d ./source/router_eligible_device_app.o ./source/semihost_hardfault.d ./source/semihost_hardfault.o
+	-$(RM) ./source/fsl_fxos.d ./source/fsl_fxos.o ./source/mtb.d ./source/mtb.o ./source/router_eligible_device_app.d ./source/router_eligible_device_app.o ./source/semihost_hardfault.d ./source/semihost_hardfault.o
 
 .PHONY: clean-source
 

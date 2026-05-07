@@ -17,7 +17,6 @@ Include Files
 /* General Includes */
 #include "EmbeddedTypes.h"
 #include <string.h>
-#include <stdio.h>
 
 /* FSL Framework */
 #include "shell.h"
@@ -1720,73 +1719,45 @@ static void APP_CoapAccelCb
 (
     coapSessionStatus_t sessionStatus,
     uint8_t *pData,
-	coapSession_t *pSession,
-	uint32_t dataLen
+    coapSession_t *pSession,
+    uint32_t dataLen
 )
 {
 	char addrStr[INET6_ADDRSTRLEN];
 	bool_t isConfirmable;
-	char accelStr[48];
-	uint32_t accelStrLen = 0;
-	fxos_data_t sensorData;
-	int16_t xData, yData, zData;
+    char accelStr[48];
+    uint32_t accelStrLen = 0;
+    fxos_data_t sensorData;
+    int16_t xData, yData, zData;
 
 	/* Solo se procesan mensajes correctamente recibidos */
-	if(sessionStatus != gCoapSuccess_c)
-	{
-		return;
-	}
+	    if(sessionStatus != gCoapSuccess_c)
+	    {
+	        return;
+	    }
 
-	/* CON vs NON and print requester info */
-	isConfirmable = (pSession->msgType == gCoapConfirmable_c);
+	    /* CON vs NON and print requester info */
+	    isConfirmable = (pSession->msgType == gCoapConfirmable_c);
 
-	ntop(AF_INET6, (ipAddr_t*)&pSession->remoteAddrStorage.ss_addr,
-			addrStr, INET6_ADDRSTRLEN);
+	    ntop(AF_INET6, (ipAddr_t*)&pSession->remoteAddrStorage.ss_addr,
+	         addrStr, INET6_ADDRSTRLEN);
 
-	shell_write("\r");
-	if(isConfirmable)
-	{
-		shell_printf("CON instruction received from %s\n\r", addrStr);
-	}
-	else
-	{
-		shell_printf("NON instruction received from %s\n\r", addrStr);
-	}
-	shell_refresh();
+	    shell_write("\r");
+	    if(isConfirmable)
+	    {
+	        shell_printf("CON instruction received from %s\n\r", addrStr);
+	    }
+	    else
+	    {
+	        shell_printf("NON instruction received from %s\n\r", addrStr);
+	    }
+	    shell_refresh();
 
-	/* Only reply GET requests */
-	if(pSession->code != gCoapGET_c)
-	{
-		return;
-	}
-
-	/* Read raw X, Y, Z from accelerometer */
-	if(FXOS_ReadSensorData(&gFxosHandle, &sensorData) == kStatus_Success)
-	{
-		/* Convert to 14-bit signed values */
-		xData = (int16_t)((uint16_t)((uint16_t)sensorData.accelXMSB << 8) | sensorData.accelXLSB) / 4U;
-		yData = (int16_t)((uint16_t)((uint16_t)sensorData.accelYMSB << 8) | sensorData.accelYLSB) / 4U;
-		zData = (int16_t)((uint16_t)((uint16_t)sensorData.accelZMSB << 8) | sensorData.accelZLSB) / 4U;
-
-		/* Format response string */
-		accelStrLen = snprintf(accelStr, sizeof(accelStr), "x=%d y=%d z=%d", xData, yData, zData);
-	}
-	else
-	{
-		accelStrLen = snprintf(accelStr, sizeof(accelStr), "accel read error");
-	}
-
-    /* Send response with accel data for both CON and NON GET */
-    if(isConfirmable)
-    {
-        COAP_Send(pSession, gCoapMsgTypeAckSuccessContent_c, (uint8_t *)accelStr, accelStrLen);
-    }
-    else
-    {
-        COAP_Send(pSession, gCoapMsgTypeNonPost_c, (uint8_t *)accelStr, accelStrLen);
-    }
-
-
+	    /* Only reply GET requests */
+	    if(pSession->code != gCoapGET_c)
+	    {
+	    	return;
+	    }
 
 }
 

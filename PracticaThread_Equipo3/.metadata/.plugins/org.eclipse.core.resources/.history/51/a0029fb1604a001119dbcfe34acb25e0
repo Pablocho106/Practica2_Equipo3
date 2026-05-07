@@ -104,11 +104,6 @@
 
 #define gADC16_ReferenceVoltageSource_d kADC16_ReferenceVoltageSourceValt
 
-
-/* Accelerometer I2C configuration */
-#define BOARD_ACCEL_I2C_BASEADDR        I2C1
-#define ACCEL_I2C_CLK_SRC               I2C1_CLK_SRC
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */

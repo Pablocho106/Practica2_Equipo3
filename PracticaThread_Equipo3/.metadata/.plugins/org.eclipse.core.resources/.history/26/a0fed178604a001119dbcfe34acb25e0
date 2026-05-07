@@ -17,7 +17,6 @@ Include Files
 /* General Includes */
 #include "EmbeddedTypes.h"
 #include <string.h>
-#include <stdio.h>
 
 /* FSL Framework */
 #include "shell.h"
