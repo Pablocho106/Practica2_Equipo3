@@ -147,7 +147,7 @@ static void APP_Equipo3TimerCallback(void *param);
 static void APP_Equipo3CounterTick(uint8_t *pParam);
 
 static void APP_CoapAccelCb(coapSessionStatus_t sessionStatus, uint8_t *pData, coapSession_t *pSession, uint32_t dataLen);
-static void APP_InitAccel(void);
+
 
 /*==================================================================================================
 Public global variables declarations
@@ -189,11 +189,6 @@ tmrTimerID_t mEquipo3TimerId = gTmrInvalidTimerID_c;
 
 const coapUriPath_t gAPP_ACCEL_URI_PATH   = {SizeOfString(APP_ACCEL_URI_PATH),   (uint8_t *)APP_ACCEL_URI_PATH};
 
-/* Accelerometer handle and I2C master handle */
-fxos_handle_t gFxosHandle;
-i2c_master_handle_t gAccelMasterHandle;
-/* FXOS device candidate addresses */
-static const uint8_t mAccelAddress[] = {0x1CU, 0x1DU, 0x1EU, 0x1FU};
 
 uint32_t leaderLedTimestamp = 0;
 
@@ -244,10 +239,6 @@ void APP_Init
         /* Initialize Temperature sensor/ADC module*/
         APP_InitADC(ADC_0);
 #endif
-
-        /*Initialize Accelerometer*/
-        APP_InitAccel();
-
 
 #if THREAD_USE_THCI && THR_ENABLE_MGMT_DIAGNOSTICS
         (void)MgmtDiagnostic_RegisterAppCb(THCI_MgmtDiagnosticAppCb);
@@ -1658,63 +1649,8 @@ static void APP_Equipo3TimerCallback
 }
 
 /*!*************************************************************************************************
-\brief  Initializes the accelerometer over I2C.
-        Scans the candidate I2C addresses, calls FXOS_Init(), and stores the
-        sensor range so raw readings can be used later.
-***************************************************************************************************/
-static void APP_InitAccel
-(
-    void
-)
-{
-    i2c_master_config_t i2cConfig;
-    uint32_t i2cSourceClock;
-    uint8_t i;
-    uint8_t regResult = 0;
-    uint8_t arrayAddrSize = sizeof(mAccelAddress) / sizeof(mAccelAddress[0]);
-    bool_t foundDevice = FALSE;
-
-    /* Get I2C source clock and wire up handles */
-    i2cSourceClock = CLOCK_GetFreq(ACCEL_I2C_CLK_SRC);
-    gFxosHandle.base      = BOARD_ACCEL_I2C_BASEADDR;
-    gFxosHandle.i2cHandle = &gAccelMasterHandle;
-
-    /* Initialize I2C master */
-    I2C_MasterGetDefaultConfig(&i2cConfig);
-    I2C_MasterInit(BOARD_ACCEL_I2C_BASEADDR, &i2cConfig, i2cSourceClock);
-    I2C_MasterTransferCreateHandle(BOARD_ACCEL_I2C_BASEADDR, &gAccelMasterHandle, NULL, NULL);
-
-    /* Scan candidate addresses to find the sensor */
-    for(i = 0; i < arrayAddrSize; i++)
-    {
-        gFxosHandle.xfer.slaveAddress = mAccelAddress[i];
-        if(FXOS_ReadReg(&gFxosHandle, WHO_AM_I_REG, &regResult, 1) == kStatus_Success)
-        {
-            foundDevice = TRUE;
-            break;
-        }
-    }
-
-    if(!foundDevice)
-    {
-        shell_write("\r\nAccelerometer not found\r\n");
-        shell_refresh();
-        return;
-    }
-
-    /* Initialize FXOS sensor */
-    if(FXOS_Init(&gFxosHandle) != kStatus_Success)
-    {
-        shell_write("\r\nAccelerometer init failed\r\n");
-        shell_refresh();
-    }
-}
-
-
-/*!*************************************************************************************************
 \brief  To be implemented.
 ***************************************************************************************************/
-
 static void APP_CoapAccelCb
 (
     coapSessionStatus_t sessionStatus,

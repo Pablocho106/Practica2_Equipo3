@@ -1658,9 +1658,7 @@ static void APP_Equipo3TimerCallback
 }
 
 /*!*************************************************************************************************
-\brief  Initializes the accelerometer over I2C.
-        Scans the candidate I2C addresses, calls FXOS_Init(), and stores the
-        sensor range so raw readings can be used later.
+\brief  To be implemented.
 ***************************************************************************************************/
 static void APP_InitAccel
 (
