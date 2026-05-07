@@ -1560,34 +1560,6 @@ static void APP_CoapEquipo3Cb
     }
     shell_refresh();
 
-    /* ---- Build counter string for GET responses ---- */
-    if(pSession->code == gCoapGET_c)
-    {
-    	/* Convert counter value to decimal ASCII string */
-    	uint16_t val = gEquipo3Counter;
-
-    	counterStr[0] = '\0';
-    	counterStrLen = 0;
-
-    	if(val >= 100)
-    	{
-    		counterStr[counterStrLen++] = (char)('0' + (val / 100));
-    		val %= 100;
-    		counterStr[counterStrLen++] = (char)('0' + (val / 10));
-    		counterStr[counterStrLen++] = (char)('0' + (val % 10));
-    	}
-    	else if(val >= 10)
-    	{
-    		counterStr[counterStrLen++] = (char)('0' + (val / 10));
-    		counterStr[counterStrLen++] = (char)('0' + (val % 10));
-    	}
-    	else
-    	{
-    		counterStr[counterStrLen++] = (char)('0' + val);
-    	}
-    	counterStr[counterStrLen] = '\0';
-    }
-
 
 
 
